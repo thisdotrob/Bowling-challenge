@@ -1,42 +1,54 @@
-'use strict';
-
-function Game() {
-    this._frames = [];
+function Game(newFrameConstructor) {
+  this._frames = [];
+  this._newFrameConstructor = newFrameConstructor;
+  this._currentFrame = newFrameConstructor();
 }
 
-Game.prototype.frames = function(){
+Game.prototype.frames = function() {
   return this._frames;
 }
 
-Game.prototype.roll = function(pinsKnockedDown){
-  if(this._noFramesLeft()){
-    throw new Error('No frames left');
+Game.prototype.roll = function(numberOfPinsKnockedDown) {
+  if(this._gameOver()) {
+    throw new Error('No rolls left');
   }
-  if(pinsKnockedDown > 10 || pinsKnockedDown < 0){
-    throw new Error('Invalid number of pins knocked down');
+  this._currentFrame.roll(numberOfPinsKnockedDown);
+  if (this._currentFrame.isComplete()) {
+    this._startNextFrame();
   }
-  this._frames.push(pinsKnockedDown);
 }
 
-Game.prototype.score = function(){
-  return this._calculateScore();
-}
-
-Game.prototype._calculateScore = function(){
-  var score = 0;
-  var frames = this._frames;
-  for(var i = 0; i < frames.length; i++){
-    var multiplier;
-    if (frames[i-1] === 10 || frames[i-2] === 10){
-      multiplier = 2;
-    } else{
-      multiplier = 1;
-    }
-    score = score + frames[i] * multiplier;
+Game.prototype.score = function() {
+  var scores = 0;
+  var numFramesToSum = this._frames.length > 10 ? 10 : this._frames.length;
+  for(var i = 0; i < numFramesToSum; i++) {
+    scores = scores + this._frames[i].score();
   }
-  return score;
+  return scores;
 }
 
-Game.prototype._noFramesLeft = function(){
-  return this._frames.length >= 20 ? true : false;
+Game.prototype._startNextFrame = function() {
+  var nextFrame = this._newFrameConstructor();
+  this._currentFrame.setNextFrame(nextFrame);
+  this._storeCurrentFrame();
+  this._currentFrame = nextFrame;
+}
+
+Game.prototype._storeCurrentFrame = function() {
+  this._frames.push(this._currentFrame);
+}
+
+Game.prototype._gameOver = function() {
+  var frames = this.frames();
+  if(frames.length === 10) {
+    return !this._lastFrameIsStrike();
+  }
+  if(frames.length === 11 && this._lastFrameIsStrike()) {
+    return typeof this._currentFrame.firstRoll() !== 'undefined';
+  }
+  return false
+}
+
+Game.prototype._lastFrameIsStrike = function() {
+  return this._frames[this._frames.length - 1].isStrike();
 }
