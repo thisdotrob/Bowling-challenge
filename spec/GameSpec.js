@@ -1,11 +1,13 @@
 describe('game', function() {
   var game;
   var frame = jasmine.createSpyObj('frame',['roll',
+                                            'rollWithAccuracy',
                                             'isComplete',
                                             'setNextFrame',
                                             'score',
                                             'isStrike',
-                                            'firstRoll'])
+                                            'firstRoll',
+                                            'pinsLeft'])
   var newFrameConstructor = function() {
     return frame;
   }
@@ -27,6 +29,12 @@ describe('game', function() {
     expect(frame.roll).toHaveBeenCalledWith(1);
   })
 
+  it('delegates roll with accuracy to the current frame', function() {
+    frame.pinsLeft.and.returnValue(10);
+    game.rollWithAccuracy(0.5);
+    expect(frame.roll).toHaveBeenCalledWith(5);
+  })
+
   it('adds completed frames to the array of frames', function() {
     frame.isComplete.and.returnValue(true);
     game.roll(0);
@@ -40,6 +48,11 @@ describe('game', function() {
     game.roll(0);
     game.score();
     expect(frame.score.calls.count()).toEqual(2);
+  })
+
+  it('delegates the number of pins left standing to the frame', function() {
+    game.pinsLeft();
+    expect(frame.pinsLeft).toHaveBeenCalled();
   })
 
   it('prevents user rolling more than 10 standard frames', function() {

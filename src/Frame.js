@@ -6,8 +6,9 @@ Frame.prototype.rolls = function() {
   return this._rolls;
 }
 
-Frame.prototype.roll = function(numberOfPinsKnockedDown) {
-  this._rolls.push(numberOfPinsKnockedDown);
+Frame.prototype.roll = function(pinsDown) {
+  this._rolls.push(pinsDown);
+  console.log("rolled a " + pinsDown);
 }
 
 Frame.prototype.isComplete = function() {
@@ -22,9 +23,12 @@ Frame.prototype.firstRoll = function() {
   return this._rolls[0];
 }
 
-Frame.prototype._secondRoll = function() {
-  var secondRoll = this._rolls[1];
-  return typeof secondRoll === 'undefined' ? 0 : secondRoll;
+Frame.prototype.isMidFrame = function() {
+  return this._rolls.length === 1 && !this.isStrike();
+}
+
+Frame.prototype.pinsLeft = function() {
+  return this.isMidFrame() ? 10 - this.firstRoll() : 10;
 }
 
 Frame.prototype.isStrike = function() {
@@ -36,11 +40,24 @@ Frame.prototype.isSpare = function() {
 }
 
 Frame.prototype.score = function() {
+  console.log("base: " + this.baseScore() + " bonus: " + this._bonusScore())
   return this.baseScore() + this._bonusScore();
 }
 
 Frame.prototype.baseScore = function() {
-  return this.firstRoll() + this._secondRoll();
+  var baseScore = 0;
+  if (typeof this.firstRoll() !== 'undefined') {
+    baseScore += this.firstRoll();
+  }
+  if (typeof this._secondRoll() !== 'undefined') {
+    baseScore += this._secondRoll();
+  }
+  return baseScore;
+}
+
+Frame.prototype._secondRoll = function() {
+  var secondRoll = this._rolls[1];
+  return typeof secondRoll === 'undefined' ? 0 : secondRoll;
 }
 
 Frame.prototype._bonusScore = function() {
@@ -69,5 +86,10 @@ Frame.prototype._strikeBonusScore = function() {
 }
 
 Frame.prototype._spareBonusScore = function() {
-  return this._nextFrame.firstRoll();
+  var bonus = 0
+  var nextFrameFirstRoll = this._nextFrame.firstRoll();
+  if (typeof nextFrameFirstRoll !== 'undefined') {
+    bonus = bonus + nextFrameFirstRoll;
+  }
+  return bonus;
 }

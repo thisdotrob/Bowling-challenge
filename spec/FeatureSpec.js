@@ -36,4 +36,23 @@ describe('feature', function() {
     expect(game.score()).toEqual(300);
   })
 
+  it('calculates an all spares score', function() {
+    for(var i = 0; i < 20; i++) {
+      game.roll(5);
+    }
+  })
+
+  it('returns the number of pins left standing', function() {
+    game.roll(3);
+    expect(game.pinsLeft()).toEqual(7);
+  })
+
+  it('ends the game when there are no rolls left', function() {
+    var roll = function() { game.roll(10) }
+    for(var i = 0; i < 12; i++) {
+      roll();
+    }
+    expect(roll).toThrowError('No rolls left')
+  })
+
 })

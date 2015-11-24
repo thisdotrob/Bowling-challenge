@@ -1,0 +1,26 @@
+body {
+  background-color: grey;
+}
+
+#swing_bar {
+  width: 300px;
+  height: 25px;
+  background-color: black;
+}
+
+#swing_blob {
+  width: 10px;
+  height: 25px;
+  background-color: cyan;
+}
+
+#pins_left_container {
+  height: 75px;
+}
+
+.target {
+  margin-left: 145px;
+  width: 10px;
+  height: 5px;
+  background-color: green;
+}
