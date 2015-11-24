@@ -1,0 +1,25 @@
+{
+  "name": "bowling-challenge",
+  "version": "0.1.0",
+  "description": "Makers Academy bowling challenge",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thisdotrob/bowling-challenge.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/thisdotrob/bowling-challenge/issues"
+  },
+  "homepage": "https://github.com/thisdotrob/bowling-challenge#readme",
+  "dependencies": {
+    "ejs": "^2.3.4",
+    "express": "^4.13.3",
+    "http": "0.0.0",
+    "socket.io": "^1.3.7"
+  }
+}
