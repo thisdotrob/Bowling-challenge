@@ -1,5 +1,11 @@
 $(document).ready(function(){
   $('#roll_button').click(function(){
-    $('#frame0roll1').text('9');
+    var accuracy = $('#accuracy_field').val();
+    var pinsDown = Math.round(parseFloat(accuracy) * 10);
+    if (pinsDown === 10) {
+      $('#frame0right').text('x');
+    } else {
+      $('#frame0left').text(pinsDown);
+    }
   });
 });

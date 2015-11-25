@@ -18,19 +18,30 @@ describe('User visits index page', function(){
   });
 
   it('should show the accuracy prompt', function(){
-    browser.assert.text('#accuracy_form', 'Accuracy: Roll!');
+    browser.assert.text('#accuracy_form', 'Accuracy:');
   });
 
-  describe('User fills in the accuracy form', function(){
+  describe('User fills in the accuracy form and presses Roll!', function(){
 
-    before(function(done){
+    it('accuracy of 0.9 displays a 9 in the left scoring box', function(){
       browser
-        .fill('accuracy_field', '9')
-        .pressButton('roll_button', done);
+        .fill('#accuracy_field', '0.9')
+        .pressButton('roll_button');
+      browser.assert.text('#frame0left', '9');
     });
 
-    it('should display the roll in the scoring table', function(){
-      browser.assert.text('#frame0roll1', '9');
+    it('accuracy of 0 displays a 0 in the left scoring box', function(){
+      browser
+        .fill('#accuracy_field', '0')
+        .pressButton('roll_button');
+      browser.assert.text('#frame0left', '0');
+    });
+
+    it('accuracy of 1 displays an x in the right scoring box', function(){
+      browser
+        .fill('#accuracy_field', '1')
+        .pressButton('roll_button');
+      browser.assert.text('#frame0right', 'x');
     });
 
   });
