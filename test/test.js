@@ -2,10 +2,10 @@ var Browser = require('zombie');
 
 Browser.localhost('example.com', 3000);
 
-describe('User visits index page', function(){
+describe('User visits index page.', function(){
   var browser = new Browser();
 
-  before(function(done){
+  beforeEach(function(done){
     browser.visit('/', done);
   });
 
@@ -21,7 +21,7 @@ describe('User visits index page', function(){
     browser.assert.text('#accuracy_form', 'Accuracy:');
   });
 
-  describe('User fills in the accuracy form and presses Roll!', function(){
+  describe('User fills in the accuracy form and clicks Roll.', function(){
 
     it('accuracy of 0.9 displays a 9 in the left scoring box', function(){
       browser
@@ -42,6 +42,32 @@ describe('User visits index page', function(){
         .fill('#accuracy_field', '1')
         .pressButton('roll_button');
       browser.assert.text('#frame0right', 'x');
+    });
+
+    describe('User rolls again after rolling a 5.', function(){
+
+      beforeEach(function(done){
+          browser
+            .fill('#accuracy_field', '0.5')
+            .pressButton('roll_button', done);
+      });
+
+      it('accuracy of 0.2 displays 2 in right scoring box', function(){
+        browser
+          .fill('#accuracy_field', '0.2')
+          .pressButton('roll_button');
+        browser.assert.text('#frame0left', '5');
+        browser.assert.text('#frame0right', '2');
+      });
+
+      it('accuracy of 0.5 displays / in the right scoring box', function(){
+        browser
+          .fill('#accuracy_field', '0.5')
+          .pressButton('roll_button');
+        browser.assert.text('#frame0left', '5');
+        browser.assert.text('#frame0right', '/');
+      });
+
     });
 
   });
