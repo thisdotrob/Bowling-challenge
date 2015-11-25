@@ -1,20 +1,23 @@
 <head>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <script src="/js/jquery.js"></script>
   <link rel="stylesheet" type="text/css" href="/css/stylesheet.css">
   <title>Bowling</title>
 </head>
 <body>
-  <h1>Welcome to Bowling</h1>
+  <h1>Let's bowl!</h1>
+
   <form id="accuracy_form">
     <label for="accuracy_field">Accuracy:</label>
-    <input type="text" id="accuracy_field">
-    <button type="submit" form="accuracy_form">Roll!</button>
+    <input type="text" name="accuracy_field">
   </form>
+  <button id="roll_button" name="roll_button">Roll!</button>
 
   <div id="outer_frame">
     <div class="frame_box">
       <div class="frame_name"></div>
       <div class="inner_frame_top_box">
-        <div class="roll_one"></div>
+        <div class="roll_one" id="frame0roll1"></div>
         <div class="roll_two"></div>
       </div>
       <div class="inner_frame_bottom_box"></div>
