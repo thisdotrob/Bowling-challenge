@@ -48,8 +48,8 @@ describe('feature', function() {
   })
 
   it('ends the game when there are no rolls left', function() {
-    var roll = function() { game.roll(10) }
-    for(var i = 0; i < 12; i++) {
+    var roll = function() { game.roll(1) }
+    for(var i = 0; i < 20; i++) {
       roll();
     }
     expect(roll).toThrowError('No rolls left')
